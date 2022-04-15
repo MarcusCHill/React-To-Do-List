@@ -1,8 +1,11 @@
 import * as React from "react";
-
-function TodoListItem (props){
+/*
+Create TodoListItem function component that accepts properties defined at TodoListItem instantization
+Returns a list element with the item's title value (from todoList array).
+*/
+function TodoListItem ({ item }){
   return(
-    <li>{props.item.title}</li>
+    <li>{item.title}</li>
   );
 };
 
