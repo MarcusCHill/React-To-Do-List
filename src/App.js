@@ -2,8 +2,6 @@ import React from 'react';
 import AddTodoForm from "./AddTodoForm";
 import TodoList from "./TodoList";
 
-
-
 function useSemiPersistentState() {
 
   /*
@@ -24,7 +22,6 @@ function useSemiPersistentState() {
 };
 
 
-
 /*
 Create main function component App that returns a container holding all other function components and HTML JSX
 returns heading title "Todo List", AddTodoForm component with onAddTodo handler, and TodoList component with todoList property
@@ -40,14 +37,30 @@ function App() {
     setTodoList([...todoList, newTodo]);
   }
 
+  /*
+  removeTodo function accepts id parameter
+  current todoList is then filtered to return a new todoList named listAfterRemovedItem that does not contain the list item with the id argument
+  calls setTodoList setter function which accepts an array with spreaded listAfterRemovedItem items
+  */
+  function removeTodo (id){
+    const listAfterRemovedItem = todoList.filter((item) => item.id !== id)
+    return(
+      setTodoList([...listAfterRemovedItem])
+    );
+  };
+
   return (
     <>
       <h1>Todo List</h1>
       {/*
-      onAddTodo property of AddTodoForm component works as a callback handler function to define newTodo in addTodo function based on user input within AddTodoForm input feild.
+      onAddTodo property of AddTodoForm component works as a callback handler to define newTodo in addTodo function based on user input within AddTodoForm input feild.
       */}
       <AddTodoForm onAddTodo={addTodo}/>
-      <TodoList todoList={todoList}/>
+      {/*
+      onRemoveTodo property of TodoList component works as a callback handler to pass id argument in removeTodo function based on a pre-defined TodoListItem's id.
+      Property passed down to TodoList.js and once more to TodoListItem.js
+      */}
+      <TodoList todoList={todoList} onRemoveTodo={removeTodo}/>
     </>
   );
 };
