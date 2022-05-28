@@ -33,10 +33,10 @@ function AddTodoForm ({ onAddTodo }){
     /*
     onSubmit event handler runs handleAddTodo when form is submitted
     */
-    <form  onSubmit={handleAddTodo}>
+    <form onSubmit={handleAddTodo}>
       <InputWithLabel id="todoTitle" name="title" onChange={handleTitleChange} value={todoTitle}>
         Title:
-      </InputWithLabel
+      </InputWithLabel>
       <button>Add</button>
     </form>
   );
