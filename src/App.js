@@ -28,21 +28,17 @@ function App() {
   /*
   React.useEffect provides a side effect to be ran based on dependancy.
   Empty dependency array triggers code on initial render
-  Create promise with setTimeout function to simulate a fetch call that updates todoList with array within localStorage and sets isLoading to false.
-  If localStorage is empty it returns null and todoList recieves an empty array.
+``Fetch data from Airtable API that updates todoList with returned data and sets isLoading to false.
   */
   React.useEffect(() => {
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          data:{
-            todoList: JSON.parse(localStorage.getItem("savedTodoList"))||[]
-          }
-        });
-      }, 2000);
+    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`, {
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`
+      }
     })
+    .then((response) => response.json())
     .then((result) => {
-      setTodoList(result.data.todoList);
+      setTodoList(result.records);
       setIsLoading(false);
     });
   }, []);

@@ -6,7 +6,7 @@ Returns a list element with the item's title value and creates a remove button t
 function TodoListItem ({ item, onRemoveTodo }){
   return(
     <li>
-      {item.title}
+      {item.fields.Title}
       &nbsp;
       <button type="button" onClick={() => onRemoveTodo(item.id)}>remove</button>
     </li>
