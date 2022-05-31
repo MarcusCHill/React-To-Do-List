@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AddTodoForm from "./AddTodoForm";
 import TodoList from "./TodoList";
 
@@ -63,22 +64,27 @@ function App() {
   };
 
   return (
-    <>
-      <h1>Todo List</h1>
-      {/*
-      onAddTodo property of AddTodoForm component works as a callback handler to define newTodo in addTodo function based on user input within AddTodoForm input feild.
-      */}
-      <AddTodoForm onAddTodo={addTodo}/>
-      {/*
-      Conditional react returns paragraph tags while isLoading is true, if false return TodoList component.
-      onRemoveTodo property of TodoList component works as a callback handler to pass id argument in removeTodo function based on a pre-defined TodoListItem's id.
-      Property passed down to TodoList.js and once more to TodoListItem.js
-      */}
-      {
-      isLoading ? <p>Loading ...</p> :
-      <TodoList todoList={todoList} onRemoveTodo={removeTodo}/>
-      }
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route exact path="/" element={
+          <React.Fragment>
+            <h1>Todo List</h1>
+            {/*onAddTodo property of AddTodoForm component works as a callback handler to define newTodo in addTodo function based on user input within AddTodoForm input feild.*/}
+            <AddTodoForm onAddTodo={addTodo}/>
+            {/*
+            Conditional react returns paragraph tags while isLoading is true, if false return TodoList component.
+            onRemoveTodo property of TodoList component works as a callback handler to pass id argument in removeTodo function based on a pre-defined TodoListItem's id.
+            Property passed down to TodoList.js and once more to TodoListItem.js
+            */}
+            {
+            isLoading ? <p>Loading ...</p> :
+            <TodoList todoList={todoList} onRemoveTodo={removeTodo}/>
+            }
+          </React.Fragment>
+        }/>
+        <Route path="/new" element={<h1>New Todo List</h1>}/>
+      </Routes>
+    </BrowserRouter>
   );
 };
 
