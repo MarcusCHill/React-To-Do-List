@@ -1,4 +1,5 @@
 import React from "react";
+import InputWithLabel from "./InputWithLabel";
 /*
 Create function component AddTodoForm that accepts destructured properties found during instantization.
 AddTodoForm returns a form that allows users to add a todo title to their todo list.
@@ -32,9 +33,10 @@ function AddTodoForm ({ onAddTodo }){
     /*
     onSubmit event handler runs handleAddTodo when form is submitted
     */
-    <form  onSubmit={handleAddTodo}>
-      <label htmlFor="todoTitle">Title: </label>
-      <input id="todoTitle" type="text" name="title" onChange={handleTitleChange} value={todoTitle}/>
+    <form onSubmit={handleAddTodo}>
+      <InputWithLabel id="todoTitle" name="title" onChange={handleTitleChange} value={todoTitle}>
+        Title:
+      </InputWithLabel>
       <button>Add</button>
     </form>
   );

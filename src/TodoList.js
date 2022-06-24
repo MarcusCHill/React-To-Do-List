@@ -3,7 +3,7 @@ import TodoListItem from "./TodoListItem";
 /*
 Create TodoList function component that returns an unordered list where list items are accessed by todoList array using map method
 */
-function TodoList ({ todoList }) {
+function TodoList ({ todoList, onRemoveTodo }) {
   return (
     <ul>
       {/*
@@ -12,7 +12,7 @@ function TodoList ({ todoList }) {
       item propery is set as "item" accessing each value within todoList array
       */}
       {todoList.map(function(item){
-        return <TodoListItem key={item.id} item={item}/>
+        return <TodoListItem key={item.id} item={item} onRemoveTodo={onRemoveTodo}/>
       })}
     </ul>
   );
