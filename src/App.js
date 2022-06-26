@@ -17,21 +17,13 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(true);
 
   /*
-  React.useEffect provides a side effect to be ran based on dependancy.
-  If a change occurs in TodoList and isLoading is false this code is implemented which stores the TodoList in localStorage
+  React.useEffect calls handleFetchTodoItems anytime it is called/changed.
+  isLoading in dependency array of handleFetchTodoItems triggers code on isLoading change.
+  Fetch GET data from Airtable API that updates todoList with returned data and sets isLoading to false.
   */
-  React.useEffect(() => {
-    if(!isLoading){
-      localStorage.setItem("savedTodoList", JSON.stringify(todoList));
-    }
-  }, [todoList, isLoading]);
+  const handleFetchTodoItems = React.useCallback(() => {
+    if (!isLoading) return;
 
-  /*
-  React.useEffect provides a side effect to be ran based on dependancy.
-  Empty dependency array triggers code on initial render
-``Fetch data from Airtable API that updates todoList with returned data and sets isLoading to false.
-  */
-  React.useEffect(() => {
     fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`, {
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`
@@ -42,25 +34,51 @@ function App() {
       setTodoList(result.records);
       setIsLoading(false);
     });
-  }, []);
+  }, [isLoading]);
+
+  React.useEffect(() =>{
+    handleFetchTodoItems();
+  }, [handleFetchTodoItems])
 
   /*
-  addTodo function accepts newTodo parameter and calls setTodoList setter function which accepts a new array with spreaded todoList items and newTodo item.
+  addTodo function accepts newTodo parameter
+  calls fetch POST request to add newTodo to API and sets setIsLoading to true to trigger useCallback.
   */
   function addTodo (newTodo){
-    setTodoList([...todoList, newTodo]);
+    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(
+      {
+        "fields": {
+          "Title": newTodo
+        }
+      })
+    })
+    .then((response) => response.json())
+    .then((result) => {
+      setIsLoading(true);
+    });
   }
 
   /*
   removeTodo function accepts id parameter
-  current todoList is then filtered to return a new todoList named listAfterRemovedItem that does not contain the list item with the id argument
-  calls setTodoList setter function which accepts an array with spreaded listAfterRemovedItem items
+  calls fetch DELETE request to remove TodoListItem with corresponding id in API and sets setIsLoading to true to trigger useCallback.
   */
   function removeTodo (id){
-    const listAfterRemovedItem = todoList.filter((item) => item.id !== id)
-    return(
-      setTodoList([...listAfterRemovedItem])
-    );
+    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+      },
+    })
+    .then((response) => response.json())
+    .then((result) => {
+      setIsLoading(true);
+    });
   };
 
   return (
