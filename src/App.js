@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import style from "./App.module.css";
 import AddTodoForm from "./AddTodoForm";
 import TodoList from "./TodoList";
 
@@ -24,7 +25,7 @@ function App() {
   const handleFetchTodoItems = React.useCallback(() => {
     if (!isLoading) return;
 
-    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`, {
+    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default/?view=Grid%20view`, {
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`
       }
@@ -86,7 +87,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={
           <React.Fragment>
-            <h1>Todo List</h1>
+            <h1 className={style.title}>Todo List</h1>
             {/*onAddTodo property of AddTodoForm component works as a callback handler to define newTodo in addTodo function based on user input within AddTodoForm input feild.*/}
             <AddTodoForm onAddTodo={addTodo}/>
             {/*

@@ -1,0 +1,14 @@
+.label{
+  font-size: 2em;
+  color: darkblue;
+}
+.input{
+  color: darkblue;
+  padding: 7.5px 7.5px 3px 7.5px;
+  font-size: 1.5rem;
+  background-color: transparent;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 2px solid darkblue;
+}

@@ -6,7 +6,7 @@ Render the App function component within the HTML tag with id value "root"
 */
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App/>
   </React.StrictMode>,
   document.getElementById('root')
 );
