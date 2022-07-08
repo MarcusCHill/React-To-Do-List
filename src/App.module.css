@@ -1,3 +1,8 @@
+body{
+  background-image: linear-gradient(purple, white);
+  height: 100vh;
+  margin: 0em;
+}
 .title{
  color: darkblue;
  display: flex;
