@@ -18,6 +18,19 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(true);
 
   /*
+  function called within handleFetchTodoItems to take in the data from airtable api and sort them by title from A-Z
+  */
+  function sortItemsByTitle(objectA, objectB){
+    if(objectA.fields.Title < objectB.fields.Title){
+      return -1
+    } else if (objectA.fields.Title < objectB.fields.Title){
+      return 0
+    } else {
+      return 1
+    }
+  };
+
+  /*
   React.useEffect calls handleFetchTodoItems anytime it is called/changed.
   isLoading in dependency array of handleFetchTodoItems triggers code on isLoading change.
   Fetch GET data from Airtable API that updates todoList with returned data and sets isLoading to false.
@@ -25,13 +38,14 @@ function App() {
   const handleFetchTodoItems = React.useCallback(() => {
     if (!isLoading) return;
 
-    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default/?view=Grid%20view`, {
+    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default/`, {
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`
       }
     })
     .then((response) => response.json())
     .then((result) => {
+      result.records.sort(sortItemsByTitle);
       setTodoList(result.records);
       setIsLoading(false);
     });
