@@ -1,6 +1,12 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import InputWithLabel from "./InputWithLabel";
 import style from "./AddTodoForm.module.css"
+
+AddTodoForm.propTypes = {
+  onAddTodo: PropTypes.func,
+}
+
 /*
 Create function component AddTodoForm that accepts destructured properties found during instantization.
 AddTodoForm returns a form that allows users to add a todo title to their todo list.
