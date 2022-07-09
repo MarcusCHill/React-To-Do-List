@@ -1,16 +1,12 @@
 import React from "react";
-<<<<<<< HEAD
 import PropTypes from 'prop-types';
-=======
 import style from "./TodoList.module.css"
->>>>>>> f67da32e5dd08f32de95581a2ad71579ecbc4e05
 import TodoListItem from "./TodoListItem";
 
 TodoList.propTypes = {
   todoList: PropTypes.array,
   onRemoveTodo: PropTypes.func,
 }
-
 
 /*
 Create TodoList function component that returns an unordered list where list items are accessed by todoList array using map method
