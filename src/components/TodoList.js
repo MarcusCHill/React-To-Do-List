@@ -1,5 +1,9 @@
 import React from "react";
+<<<<<<< HEAD
 import PropTypes from 'prop-types';
+=======
+import style from "./TodoList.module.css"
+>>>>>>> f67da32e5dd08f32de95581a2ad71579ecbc4e05
 import TodoListItem from "./TodoListItem";
 
 TodoList.propTypes = {
@@ -13,7 +17,7 @@ Create TodoList function component that returns an unordered list where list ite
 */
 function TodoList ({ todoList, onRemoveTodo }) {
   return (
-    <ul>
+    <ul className={style.listTodos}>
       {/*
       Iterate over todoList array using map method that accepts a function returning TodoListItem function component with properties to pass down
       key property is set as "item.id" accessing the id value within each value of todoList array
