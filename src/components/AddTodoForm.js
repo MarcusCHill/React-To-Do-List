@@ -11,7 +11,7 @@ AddTodoForm.propTypes = {
 Create function component AddTodoForm that accepts destructured properties found during instantization.
 AddTodoForm returns a form that allows users to add a todo title to their todo list.
 */
-function AddTodoForm ({ onAddTodo }){
+function AddTodoForm ({ onAddTodo, todoList }){
   /*
   Call and destructure React.useState hook to set todoTitle variable with value defined by setTodoTitle function
   */
@@ -32,7 +32,8 @@ function AddTodoForm ({ onAddTodo }){
   */
   function handleAddTodo (e){
     e.preventDefault();
-    onAddTodo(todoTitle);
+    const position = todoList.length;
+    onAddTodo(todoTitle, position);
     setTodoTitle("");
   };
 
