@@ -1,28 +1,43 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import style from "./TodoList.module.css"
+import style from "./TodoList.module.css";
+import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd";
 import TodoListItem from "./TodoListItem";
 
 TodoList.propTypes = {
   todoList: PropTypes.array,
   onRemoveTodo: PropTypes.func,
+  onDragEnd: PropTypes.func,
 }
 
 /*
 Create TodoList function component that returns an unordered list where list items are accessed by todoList array using map method
 */
-function TodoList ({ todoList, onRemoveTodo }) {
+function TodoList ({ todoList, onRemoveTodo, onDragEnd}) {
   return (
-    <ul className={style.listTodos}>
-      {/*
-      Iterate over todoList array using map method that accepts a function returning TodoListItem function component with properties to pass down
-      key property is set as "item.id" accessing the id value within each value of todoList array
-      item propery is set as "item" accessing each value within todoList array
-      */}
-      {todoList.map(function(item){
-        return <TodoListItem key={item.id} item={item} onRemoveTodo={onRemoveTodo}/>
-      })}
-    </ul>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="todoList">
+      {(provided) => (
+        <ul className={style.listTodos} {...provided.droppableProps} ref={provided.innerRef}>
+          {/*
+          Iterate over todoList array using map method that accepts a function returning TodoListItem function component with properties to pass down
+          key property is set as "item.id" accessing the id value within each value of todoList array
+          item propery is set as "item" accessing each value within todoList array
+          */}
+          {todoList.map(function(item, index){
+            return (
+              <Draggable key={item.id} draggableId={item.id} index={index}>
+                {(provided) => (
+                  <TodoListItem key={item.id} item={item} onRemoveTodo={onRemoveTodo} provided={provided} innerRef={provided.innerRef} />
+                )}
+              </Draggable>
+            )}
+          )}
+          {provided.placeholder}
+        </ul>
+      )}
+      </Droppable>
+    </DragDropContext>
   );
 };
 

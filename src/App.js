@@ -9,7 +9,6 @@ Create main function component App that returns a container holding all other fu
 returns heading title "Todo List", AddTodoForm component, and conditional react to display "Loading..." or TodoList component.
 */
 function App() {
-
   /*
   Call and destructure React.useState hook to set todoList variable with value defined by setTodoList function.
   Call and destructure React.useState hook to set isLoading variable with value defined by setIsLoading function.
@@ -18,35 +17,20 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(true);
 
   /*
-  function called within handleFetchTodoItems to take in the data from airtable api and sort them by title from A-Z
-  */
-  function sortItemsByTitle(objectA, objectB){
-    if(objectA.fields.Title < objectB.fields.Title){
-      return -1
-    } else if (objectA.fields.Title < objectB.fields.Title){
-      return 0
-    } else {
-      return 1
-    }
-  };
-
-  /*
   React.useEffect calls handleFetchTodoItems anytime it is called/changed.
   isLoading in dependency array of handleFetchTodoItems triggers code on isLoading change.
   Fetch GET data from Airtable API that updates todoList with returned data and sets isLoading to false.
   */
   const handleFetchTodoItems = React.useCallback(() => {
     if (!isLoading) return;
-
-    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default/`, {
+    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default/?view=Grid%20view`, {
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`
       }
     })
     .then((response) => response.json())
     .then((result) => {
-      result.records.sort(sortItemsByTitle);
-      setTodoList(result.records);
+      setTodoList(result.records)
       setIsLoading(false);
     });
   }, [isLoading]);
@@ -59,7 +43,7 @@ function App() {
   addTodo function accepts newTodo parameter
   calls fetch POST request to add newTodo to API and sets setIsLoading to true to trigger useCallback.
   */
-  function addTodo (newTodo){
+  function addTodo (newTodo, position){
     fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`, {
       method: 'POST',
       headers: {
@@ -69,7 +53,8 @@ function App() {
       body: JSON.stringify(
       {
         "fields": {
-          "Title": newTodo
+          "Title": newTodo,
+          "Position": position,
         }
       })
     })
@@ -96,6 +81,53 @@ function App() {
     });
   };
 
+  function handleOnDragEnd(e){
+    if (!e.destination) return;
+    let start = e.source.index;
+    let end = e.destination.index;
+    const reorderedTodoList = Array.from(todoList);
+    const [reorderedListItem] = reorderedTodoList.splice(start, 1);
+    reorderedTodoList.splice(end, 0, reorderedListItem);
+    let updateAirtableInfo = [];
+    let i = 0;
+    if (start > end){
+      i = end;
+      end = start;
+    } else {
+      i = start;
+    }
+    while (i <= end){
+      let reorderedItemId = reorderedTodoList[i].id
+      let reorderedItemTitle = reorderedTodoList[i].fields.Title
+      let patchItemPosition = i
+      function records(id, title, position) {
+        return({
+          id: reorderedItemId,
+          fields: {
+            Title: reorderedItemTitle,
+            Position: patchItemPosition,
+          }
+        })
+      }
+      updateAirtableInfo.push(records(reorderedItemId, reorderedItemTitle, patchItemPosition));
+      i++
+    }
+    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        "records": updateAirtableInfo,
+      })
+    })
+    .then((response) => response.json())
+    .then((result) => {
+      setIsLoading(true);
+    })
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -103,7 +135,7 @@ function App() {
           <React.Fragment>
             <h1 className={style.title}>Todo List</h1>
             {/*onAddTodo property of AddTodoForm component works as a callback handler to define newTodo in addTodo function based on user input within AddTodoForm input feild.*/}
-            <AddTodoForm onAddTodo={addTodo}/>
+            <AddTodoForm onAddTodo={addTodo} todoList={todoList}/>
             {/*
             Conditional react returns paragraph tags while isLoading is true, if false return TodoList component.
             onRemoveTodo property of TodoList component works as a callback handler to pass id argument in removeTodo function based on a pre-defined TodoListItem's id.
@@ -111,7 +143,7 @@ function App() {
             */}
             {
             isLoading ? <p>Loading ...</p> :
-            <TodoList todoList={todoList} onRemoveTodo={removeTodo}/>
+            <TodoList todoList={todoList} onRemoveTodo={removeTodo} onDragEnd={handleOnDragEnd}/>
             }
           </React.Fragment>
         }/>
