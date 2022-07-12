@@ -2,19 +2,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: darkblue;
   font-size: 1.25rem;
+  color: rgb(144, 78, 168);
+  background-color: white;
+  border: 1px solid black;
+  margin: .75rem;
+  padding: .5rem;
 }
 .button{
+  display: flex;
   background-color: transparent;
-  border: 1px solid darkblue;
-  color: darkblue;
-  padding: 5px;
-  margin: .5rem 0rem;
-  cursor: pointer;
-  transition: all 0.3s ease-in;
+  border: none;
+  padding: .5rem;
 }
-.button:hover{
-  background-color: darkblue;
-  color: white;
+.svg{
+  cursor: pointer;
+}
+.svg path{
+  fill: black;
+}
+.svg:hover path{
+  fill: red;
 }

@@ -1,15 +1,24 @@
 .label{
-  font-size: 2em;
-  color: darkblue;
+  font-size: 1.2rem;
+  color: rgb(144, 78, 168);
+  width: 1%;
+  position: relative;
+  left: 1rem;
 }
 .input{
-  color: darkblue;
-  width: 45%;
-  padding: 7.5px 7.5px 3px 7.5px;
+  color: rgb(144, 78, 168);
+  caret-color: black;
+  width: 100%;
+  padding: .3125rem 2.34375rem .1875rem 3.28125rem;
   font-size: 1.5rem;
   background-color: transparent;
-  border-top: 0px;
-  border-left: 0px;
-  border-right: 0px;
-  border-bottom: 2px solid darkblue;
+  border-top: 0rem;
+  border-left: 0rem;
+  border-right: 0rem;
+  border-bottom: .125rem solid rgb(144, 78, 168);
+}
+.input:focus{
+  outline: none !important;
+  border: .125rem solid rgb(144, 78, 168);
+  box-shadow: 0 0 .625rem grey;
 }

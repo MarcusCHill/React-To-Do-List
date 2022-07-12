@@ -8,17 +8,26 @@ TodoList.propTypes = {
   todoList: PropTypes.array,
   onRemoveTodo: PropTypes.func,
   onDragEnd: PropTypes.func,
+  listType: PropTypes.string,
 }
 
 /*
 Create TodoList function component that returns an unordered list where list items are accessed by todoList array using map method
 */
-function TodoList ({ todoList, onRemoveTodo, onDragEnd}) {
+function TodoList ({ todoList, onRemoveTodo, onDragEnd}){
+
+  let todoListStyles = [style.listTodos]
+  if(todoList.length < 1){
+    todoListStyles.push(style.emptyList)
+  } else {
+    todoListStyles.filter((style) => style !== style.emptyList)
+  }
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="todoList">
       {(provided) => (
-        <ul className={style.listTodos} {...provided.droppableProps} ref={provided.innerRef}>
+        <ul id="todoList" className={todoListStyles} {...provided.droppableProps} ref={provided.innerRef}>
           {/*
           Iterate over todoList array using map method that accepts a function returning TodoListItem function component with properties to pass down
           key property is set as "item.id" accessing the id value within each value of todoList array

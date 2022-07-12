@@ -1,10 +1,53 @@
+html, body{
+  height:100vh;
+  width: 100vw;
+}
 body{
-  background-image: linear-gradient(purple, white);
-  height: 100vh;
   margin: 0em;
 }
-.title{
- color: darkblue;
+.appContainer{
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, .4)
+}
+.timeContainer{
+  margin: 19rem .5rem;
+}
+.timeContainer p{
  display: flex;
- justify-content: space-around;
+ justify-content: center;
+ color: rgba(200, 200, 200, 1);
+ font-size: 2.5rem;
+ margin: 0rem;
+ width: 100%;
+}
+.loading{
+  background: none !important;
+}
+.nav{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+}
+.nav li{
+  display: block;
+}
+.nav a{
+  text-decoration: none;
+  color: rgba(200,200,200, 1);
+}
+.home{
+  width: 7%;
+}
+.home path{
+  fill: rgba(200,200,200, 1);
+}
+.listContainer{
+  display: flex;
+  padding: 0rem;
+}
+.listContainer li{
+  padding-right: 2rem;
+  font-size: 1.5rem;
 }

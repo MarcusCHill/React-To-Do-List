@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import style from "./App.module.css";
+import { ReactComponent as Loading } from './svgs/loading.svg';
+import { ReactComponent as Home } from './svgs/home.svg';
 import AddTodoForm from "./components/AddTodoForm";
 import TodoList from "./components/TodoList";
 
@@ -10,11 +12,47 @@ returns heading title "Todo List", AddTodoForm component, and conditional react 
 */
 function App() {
   /*
+  Define the path location.
+  Pathname is used to define fetchListType
+  fetchListType will be passed in each API call
+  */
+  let pathname = window.location.pathname;
+  let fetchListType = pathname.substring(1);
+
+  /*
   Call and destructure React.useState hook to set todoList variable with value defined by setTodoList function.
   Call and destructure React.useState hook to set isLoading variable with value defined by setIsLoading function.
+  Call and destructure React.useState hook to set currentTime variable with value defined by setCurrentTime function.
+  Call and destructure React.useState hook to set currentHour variable with value defined by setCurrentHour function.
   */
-  const [todoList, setTodoList] = React.useState();
+  const [todoList, setTodoList] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  const [currentTime, setCurrentTime] = React.useState(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+  const [currentHour, setCurrentHour] = React.useState(new Date().getHours());
+
+  const updateTime = () => {
+    let time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    setCurrentHour(new Date().getHours())
+    setCurrentTime(time);
+  }
+  setInterval(updateTime, 1000);
+
+  const [greeting, setGreeting] = React.useState("");
+  React.useEffect(()=>{
+    if (currentHour >= 0 && currentHour < 6){
+      document.body.classList = 'night'
+      setGreeting("GOOD EVENING")
+    } else if (currentHour >= 6 && currentHour < 12){
+      document.body.classList = 'morning'
+      setGreeting("GOOD MORNING")
+    } else if (currentHour >= 12 && currentHour < 17){
+      document.body.classList = 'afternoon'
+      setGreeting("GOOD AFTERNOON")
+    } else {
+      document.body.classList = 'evening'
+      setGreeting("GOOD EVENING")
+    }
+  },[currentHour])
 
   /*
   React.useEffect calls handleFetchTodoItems anytime it is called/changed.
@@ -22,8 +60,8 @@ function App() {
   Fetch GET data from Airtable API that updates todoList with returned data and sets isLoading to false.
   */
   const handleFetchTodoItems = React.useCallback(() => {
-    if (!isLoading) return;
-    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default/?view=Grid%20view`, {
+    if (!isLoading || fetchListType === "") return;
+    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${fetchListType}/?view=Grid%20view`, {
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`
       }
@@ -33,7 +71,7 @@ function App() {
       setTodoList(result.records)
       setIsLoading(false);
     });
-  }, [isLoading]);
+  }, [isLoading, fetchListType]);
 
   React.useEffect(() =>{
     handleFetchTodoItems();
@@ -44,7 +82,7 @@ function App() {
   calls fetch POST request to add newTodo to API and sets setIsLoading to true to trigger useCallback.
   */
   function addTodo (newTodo, position){
-    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`, {
+    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${fetchListType}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
@@ -69,7 +107,7 @@ function App() {
   calls fetch DELETE request to remove TodoListItem with corresponding id in API and sets setIsLoading to true to trigger useCallback.
   */
   function removeTodo (id){
-    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default/${id}`, {
+    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${fetchListType}/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
@@ -100,7 +138,7 @@ function App() {
       let reorderedItemId = reorderedTodoList[i].id
       let reorderedItemTitle = reorderedTodoList[i].fields.Title
       let patchItemPosition = i
-      function records(id, title, position) {
+      function records() {
         return({
           id: reorderedItemId,
           fields: {
@@ -109,10 +147,10 @@ function App() {
           }
         })
       }
-      updateAirtableInfo.push(records(reorderedItemId, reorderedItemTitle, patchItemPosition));
+      updateAirtableInfo.push(records());
       i++
     }
-    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/Default`, {
+    fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${fetchListType}`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
@@ -132,8 +170,33 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={
-          <React.Fragment>
-            <h1 className={style.title}>Todo List</h1>
+          <div className={style.appContainer}>
+            <nav className={style.nav}>
+              <ul className={style.home}>
+                <li><a href="/"><Home/></a></li>
+              </ul>
+              <ul className={style.listContainer}>
+                <li><a href="/School">School</a></li>
+                <li><a href="/Work">Work</a></li>
+              </ul>
+            </nav>
+            <div className={style.timeContainer}>
+              <p>{greeting}</p>
+              <p>{currentTime}</p>
+            </div>
+          </div>
+        }/>
+        <Route exact path="/School" element={
+          <div className={style.appContainer}>
+            <nav className={style.nav}>
+              <ul className={style.home}>
+                <li><a href="/"><Home/></a></li>
+              </ul>
+              <ul className={style.listContainer}>
+                <li><a href="/School">School</a></li>
+                <li><a href="/Work">Work</a></li>
+              </ul>
+            </nav>
             {/*onAddTodo property of AddTodoForm component works as a callback handler to define newTodo in addTodo function based on user input within AddTodoForm input feild.*/}
             <AddTodoForm onAddTodo={addTodo} todoList={todoList}/>
             {/*
@@ -142,12 +205,35 @@ function App() {
             Property passed down to TodoList.js and once more to TodoListItem.js
             */}
             {
-            isLoading ? <p>Loading ...</p> :
+            isLoading ? <Loading className={style.loading}/> :
             <TodoList todoList={todoList} onRemoveTodo={removeTodo} onDragEnd={handleOnDragEnd}/>
             }
-          </React.Fragment>
+          </div>
         }/>
-        <Route path="/new" element={<h1>New Todo List</h1>}/>
+        <Route path="/work" element={
+          <div className={style.appContainer}>
+            <nav className={style.nav}>
+              <ul className={style.home}>
+                <li><a href="/"><Home/></a></li>
+              </ul>
+              <ul className={style.listContainer}>
+                <li><a href="/School">School</a></li>
+                <li><a href="/Work">Work</a></li>
+              </ul>
+            </nav>
+            {/*onAddTodo property of AddTodoForm component works as a callback handler to define newTodo in addTodo function based on user input within AddTodoForm input feild.*/}
+            <AddTodoForm onAddTodo={addTodo} todoList={todoList}/>
+            {/*
+            Conditional react returns paragraph tags while isLoading is true, if false return TodoList component.
+            onRemoveTodo property of TodoList component works as a callback handler to pass id argument in removeTodo function based on a pre-defined TodoListItem's id.
+            Property passed down to TodoList.js and once more to TodoListItem.js
+            */}
+            {
+            isLoading ? <Loading className={style.loading}/> :
+            <TodoList todoList={todoList} onRemoveTodo={removeTodo} onDragEnd={handleOnDragEnd}/>
+            }
+          </div>
+        }/>
       </Routes>
     </BrowserRouter>
   );

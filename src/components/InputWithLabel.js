@@ -20,13 +20,13 @@ function InputWithLabel ({ id, type="text", name, value, onChange,  children}) {
 
   React.useEffect(()=>{
     inputRef.current.focus();
-  });
+  }, []);
 
   return(
     <>
       <label htmlFor={id} className={style.label}>{children}</label>
       &nbsp;
-      <input id={id} ref={inputRef} type={type} name={name} onChange={onChange} value={value} className={style.input}/>
+      <input id={id} ref={inputRef} type={type} name={name} onChange={onChange} value={value} className={style.input} required/>
     </>
   )
 };

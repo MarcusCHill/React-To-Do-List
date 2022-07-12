@@ -1,6 +1,7 @@
 import * as React from "react";
 import PropTypes from 'prop-types';
-import style from "./TodoListItem.module.css"
+import style from "./TodoListItem.module.css";
+import { ReactComponent as RemoveItem } from '../svgs/removeItem.svg';
 
 TodoListItem.propTypes = {
   todoList: PropTypes.string,
@@ -17,7 +18,9 @@ function TodoListItem ({ item, onRemoveTodo, provided, innerRef}){
     <li className={style.listItem} {...provided.dragHandleProps} {...provided.draggableProps} ref={innerRef}>
       {item.fields.Title}
       &nbsp;
-      <button type="button" onClick={() => onRemoveTodo(item.id)} className={style.button}>Remove</button>
+      <button type="button" onClick={() => onRemoveTodo(item.id)} className={style.button}>
+        <RemoveItem className={style.svg}/>
+      </button>
     </li>
   );
 };
