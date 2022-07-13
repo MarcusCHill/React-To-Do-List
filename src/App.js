@@ -39,17 +39,17 @@ function App() {
 
   const [greeting, setGreeting] = React.useState("");
   React.useEffect(()=>{
-    if (currentHour >= 0 && currentHour < 6){
-      document.body.classList = 'night'
-      setGreeting("GOOD EVENING")
-    } else if (currentHour >= 6 && currentHour < 12){
+    if (currentHour >= 6 && currentHour < 12){
       document.body.classList = 'morning'
       setGreeting("GOOD MORNING")
     } else if (currentHour >= 12 && currentHour < 17){
       document.body.classList = 'afternoon'
       setGreeting("GOOD AFTERNOON")
-    } else {
+    } else if (currentHour >= 17 && currentHour < 22) {
       document.body.classList = 'evening'
+      setGreeting("GOOD EVENING")
+    } else {
+      document.body.classList = 'night'
       setGreeting("GOOD EVENING")
     }
   },[currentHour])
@@ -171,11 +171,9 @@ function App() {
       <Routes>
         <Route exact path="/" element={
           <div className={style.appContainer}>
-            <nav className={style.nav}>
-              <ul className={style.home}>
-                <li><a href="/"><Home/></a></li>
-              </ul>
-              <ul className={style.listContainer}>
+            <nav className={style.navHome}>
+              <ul className={style.navHomeListContainer}>
+                <li><a href="/Personal">Personal</a></li>
                 <li><a href="/School">School</a></li>
                 <li><a href="/Work">Work</a></li>
               </ul>
@@ -192,11 +190,12 @@ function App() {
               <ul className={style.home}>
                 <li><a href="/"><Home/></a></li>
               </ul>
-              <ul className={style.listContainer}>
-                <li><a href="/School">School</a></li>
+              <ul className={style.navListContainer}>
+                <li><a href="/Personal">Personal</a></li>
                 <li><a href="/Work">Work</a></li>
               </ul>
             </nav>
+            <h1 className={style.listTitle}>School Todo List</h1>
             {/*onAddTodo property of AddTodoForm component works as a callback handler to define newTodo in addTodo function based on user input within AddTodoForm input feild.*/}
             <AddTodoForm onAddTodo={addTodo} todoList={todoList}/>
             {/*
@@ -216,11 +215,37 @@ function App() {
               <ul className={style.home}>
                 <li><a href="/"><Home/></a></li>
               </ul>
-              <ul className={style.listContainer}>
+              <ul className={style.navListContainer}>
+                <li><a href="/Personal">Personal</a></li>
+                <li><a href="/School">School</a></li>
+              </ul>
+            </nav>
+            <h1 className={style.listTitle}>Work Todo List</h1>
+            {/*onAddTodo property of AddTodoForm component works as a callback handler to define newTodo in addTodo function based on user input within AddTodoForm input feild.*/}
+            <AddTodoForm onAddTodo={addTodo} todoList={todoList}/>
+            {/*
+            Conditional react returns paragraph tags while isLoading is true, if false return TodoList component.
+            onRemoveTodo property of TodoList component works as a callback handler to pass id argument in removeTodo function based on a pre-defined TodoListItem's id.
+            Property passed down to TodoList.js and once more to TodoListItem.js
+            */}
+            {
+            isLoading ? <Loading className={style.loading}/> :
+            <TodoList todoList={todoList} onRemoveTodo={removeTodo} onDragEnd={handleOnDragEnd}/>
+            }
+          </div>
+        }/>
+        <Route exact path="/Personal" element={
+          <div className={style.appContainer}>
+            <nav className={style.nav}>
+              <ul className={style.home}>
+                <li><a href="/"><Home/></a></li>
+              </ul>
+              <ul className={style.navListContainer}>
                 <li><a href="/School">School</a></li>
                 <li><a href="/Work">Work</a></li>
               </ul>
             </nav>
+            <h1 className={style.listTitle}>Personal Todo List</h1>
             {/*onAddTodo property of AddTodoForm component works as a callback handler to define newTodo in addTodo function based on user input within AddTodoForm input feild.*/}
             <AddTodoForm onAddTodo={addTodo} todoList={todoList}/>
             {/*

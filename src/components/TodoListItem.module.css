@@ -9,6 +9,13 @@
   margin: .75rem;
   padding: .5rem;
 }
+.todoTitle{
+  width: 85%;
+  max-height: 6.2rem;
+  display: inline;
+  overflow: scroll;
+  overflow-wrap: break-word;
+}
 .button{
   display: flex;
   background-color: transparent;
@@ -23,4 +30,25 @@
 }
 .svg:hover path{
   fill: red;
+}
+@media screen and (max-width: 350px){
+  .todoTitle{
+    width: 85%;
+    max-height: 7.8rem;
+  }
+}
+@media screen and (min-width: 750px){
+  .todoTitle{
+    width: 92.5%;
+  }
+}
+@media screen and (min-width: 1000px){
+  .todoTitle{
+    width: 95%;
+  }
+}
+@media screen and (min-width: 1700px){
+  .todoTitle{
+    width: 97.5%;
+  }
 }

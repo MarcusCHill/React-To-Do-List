@@ -1,53 +1,150 @@
 html, body{
-  height:100vh;
-  width: 100vw;
+  min-height:100vh;
+  min-width: 100vw;
 }
 body{
   margin: 0em;
 }
 .appContainer{
-  width: 100vw;
-  height: 100vh;
+  min-width: 100vw;
+  min-height: 100vh;
   background-color: rgba(0, 0, 0, .4)
 }
+.listTitle{
+  display: flex;
+  justify-content: center;
+  color: rgba(200,200,200,.65);
+}
 .timeContainer{
-  margin: 19rem .5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 80vh;
 }
 .timeContainer p{
  display: flex;
  justify-content: center;
  color: rgba(200, 200, 200, 1);
- font-size: 2.5rem;
+ font-size: 2rem;
  margin: 0rem;
  width: 100%;
 }
 .loading{
   background: none !important;
 }
-.nav{
+.nav, .navHome{
   display: flex;
   align-items: center;
-  justify-content: space-between;
   background-image: linear-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
 }
-.nav li{
+.nav{
+  justify-content: space-between;
+}
+.navHome{
+  justify-content: space-around;
+}
+.nav li, .navHome li{
   display: block;
 }
-.nav a{
+.nav a, .navHome a{
   text-decoration: none;
   color: rgba(200,200,200, 1);
 }
+.nav a:hover, .navHome a:hover{
+  color: rgba(200,200,200, .65);
+}
 .home{
   width: 7%;
+  padding-left: 1rem;
 }
 .home path{
   fill: rgba(200,200,200, 1);
 }
-.listContainer{
+.home path:hover{
+  fill: rgba(200,200,200, .65);
+}
+.navListContainer{
   display: flex;
   padding: 0rem;
 }
-.listContainer li{
-  padding-right: 2rem;
-  font-size: 1.5rem;
+.navHomeListContainer{
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding: 0rem;
+}
+.navListContainer li{
+  font-size: 1rem;
+  padding-right: 1rem;
+}
+.navHomeListContainer li{
+  font-size: 1rem;
+}
+@media screen and (max-width: 315px){
+  .timeContainer p{
+    font-size: 1.75rem;
+  }
+}
+@media screen and (min-width: 400px){
+  .timeContainer p{
+    font-size: 2.5rem;
+  }
+  .home{
+    padding-left: 1.5rem;
+  }
+  .navListContainer li{
+    padding-right: 1.5rem;
+    font-size: 1.5rem;
+  }
+  .navHomeListContainer li{
+    font-size: 1.5rem;
+  }
+}
+@media screen and (min-width: 750px){
+  .timeContainer p{
+    font-size: 3rem;
+  }
+  .home{
+    width: 5%;
+    padding-left: 2rem;
+  }
+  .navListContainer li{
+    font-size: 1.5rem;
+    padding-right: 2rem;
+  }
+  .navHomeListContainer li{
+    font-size: 1.5rem;
+  }
+}
+@media screen and (min-width: 1000px){
+  .timeContainer p{
+    font-size: 3.5rem;
+  }
+  .home{
+    width: 4%;
+    padding-left: 2.5rem;
+  }
+  .navListContainer li{
+    font-size: 2rem;
+    padding-right: 2.5rem;
+  }
+  .navHomeListContainer li{
+    font-size: 2rem;
+  }
+}
+@media screen and (min-width: 1700px){
+  .timeContainer p{
+    font-size: 4rem;
+  }
+  .home{
+    width: 4%;
+    padding-left: 3rem;
+  }
+  .navListContainer li{
+    font-size: 2.5rem;
+    padding-right: 3rem;
+  }
+  .navHomeListContainer li{
+    font-size: 2.5rem;
+  }
 }

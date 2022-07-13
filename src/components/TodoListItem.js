@@ -16,7 +16,7 @@ Returns a list element with the item's title value and creates a remove button t
 function TodoListItem ({ item, onRemoveTodo, provided, innerRef}){
   return(
     <li className={style.listItem} {...provided.dragHandleProps} {...provided.draggableProps} ref={innerRef}>
-      {item.fields.Title}
+      <span className={style.todoTitle}>{item.fields.Title}</span>
       &nbsp;
       <button type="button" onClick={() => onRemoveTodo(item.id)} className={style.button}>
         <RemoveItem className={style.svg}/>
