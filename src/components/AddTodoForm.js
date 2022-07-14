@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import InputWithLabel from "./InputWithLabel";
-import style from "./AddTodoForm.module.css"
+import style from "./AddTodoForm.module.css";
+import { ReactComponent as AddItem } from '../svgs/addItem.svg';
 
 AddTodoForm.propTypes = {
   onAddTodo: PropTypes.func,
+  todoList: PropTypes.array,
 }
 
 /*
@@ -28,7 +30,7 @@ function AddTodoForm ({ onAddTodo, todoList }){
   /*
   Create a handler function handleAddTodo that accepts event values in response to the form onSubmit event.
   handleAddTodo will prevent reloading on submission
-  todoTitle variable is passed into onAddTodo property used as an addTodo argument found in App component.
+  todoTitle variable and position variable is passed into onAddTodo property used as an addTodo argument found in App component.
   */
   function handleAddTodo (e){
     e.preventDefault();
@@ -43,9 +45,11 @@ function AddTodoForm ({ onAddTodo, todoList }){
     */
     <form onSubmit={handleAddTodo} className={style.form}>
       <InputWithLabel id="todoTitle" name="title" onChange={handleTitleChange} value={todoTitle}>
-        Title:
+        Todo:
       </InputWithLabel>
-      <button className={style.button}>Add</button>
+      <button className={style.button}>
+        <AddItem className={style.svg}/>
+      </button>
     </form>
   );
 };

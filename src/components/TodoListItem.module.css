@@ -2,19 +2,53 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: darkblue;
   font-size: 1.25rem;
+  color: rgb(144, 78, 168);
+  background-color: white;
+  border: 1px solid black;
+  margin: .75rem;
+  padding: .5rem;
+}
+.todoTitle{
+  width: 85%;
+  max-height: 6.2rem;
+  display: inline;
+  overflow: auto;
+  overflow-wrap: break-word;
 }
 .button{
+  display: flex;
   background-color: transparent;
-  border: 1px solid darkblue;
-  color: darkblue;
-  padding: 5px;
-  margin: .5rem 0rem;
-  cursor: pointer;
-  transition: all 0.3s ease-in;
+  border: none;
+  padding: .5rem;
 }
-.button:hover{
-  background-color: darkblue;
-  color: white;
+.svg{
+  cursor: pointer;
+}
+.svg path{
+  fill: black;
+}
+.svg:hover path{
+  fill: red;
+}
+@media screen and (max-width: 350px){
+  .todoTitle{
+    width: 85%;
+    max-height: 7.8rem;
+  }
+}
+@media screen and (min-width: 750px){
+  .todoTitle{
+    width: 92.5%;
+  }
+}
+@media screen and (min-width: 1000px){
+  .todoTitle{
+    width: 95%;
+  }
+}
+@media screen and (min-width: 1700px){
+  .todoTitle{
+    width: 97.5%;
+  }
 }
