@@ -6,6 +6,7 @@ import { ReactComponent as AddItem } from '../svgs/addItem.svg';
 
 AddTodoForm.propTypes = {
   onAddTodo: PropTypes.func,
+  todoList: PropTypes.array,
 }
 
 /*
@@ -29,7 +30,7 @@ function AddTodoForm ({ onAddTodo, todoList }){
   /*
   Create a handler function handleAddTodo that accepts event values in response to the form onSubmit event.
   handleAddTodo will prevent reloading on submission
-  todoTitle variable is passed into onAddTodo property used as an addTodo argument found in App component.
+  todoTitle variable and position variable is passed into onAddTodo property used as an addTodo argument found in App component.
   */
   function handleAddTodo (e){
     e.preventDefault();

@@ -8,14 +8,17 @@ TodoList.propTypes = {
   todoList: PropTypes.array,
   onRemoveTodo: PropTypes.func,
   onDragEnd: PropTypes.func,
-  listType: PropTypes.string,
 }
 
 /*
 Create TodoList function component that returns an unordered list where list items are accessed by todoList array using map method
+all list items are Draggable within the Droppable container to rearrange its position variable by send event information to handleOnDragEnd through onDragEnd event
 */
 function TodoList ({ todoList, onRemoveTodo, onDragEnd}){
 
+  /*
+  if there are no items in todoList add className .emptyList to ul element to set display to none.
+  */
   let todoListStyles = [style.listTodos]
   if(todoList.length < 1){
     todoListStyles.push(style.emptyList)
