@@ -3,7 +3,7 @@
   color: rgb(144, 78, 168);
   width: 1%;
   position: relative;
-  left: 1rem;
+  left: .85rem;
 }
 .input{
   color: rgb(144, 78, 168);
@@ -22,9 +22,14 @@
   border: .125rem solid rgb(144, 78, 168);
   box-shadow: 0 0 .625rem grey;
 }
+@media screen and (max-width: 500px){
+  .label{
+    left: .7rem;
+  }
+}
 @media screen and (min-width: 1000px){
   .label{
-    left: 1.25rem;
+    left: 1rem;
   }
 }
 @media screen and (min-width: 1500px){

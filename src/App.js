@@ -78,12 +78,12 @@ function App() {
     if (!isLoading || fetchListType === "") return;
     fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${fetchListType}/?view=Grid%20view`, {
       headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_PERSONAL_TOKEN}`
       }
     })
     .then((response) => response.json())
     .then((result) => {
-      setTodoList(result.records)
+      setTodoList(result.records);
       setIsLoading(false);
     });
   }, [isLoading, fetchListType]);
@@ -101,7 +101,7 @@ function App() {
     fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${fetchListType}`, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_PERSONAL_TOKEN}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(
@@ -127,7 +127,7 @@ function App() {
     fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${fetchListType}/${id}`, {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_PERSONAL_TOKEN}`,
       },
     })
     .then((response) => response.json())
@@ -137,7 +137,7 @@ function App() {
   };
 
   /*
-  removeTodo function accepts event values in respose to onDragEnd event
+  handleOnDragEnd function accepts event values in respose to onDragEnd event
   if event destination is not defined exit function
   array of objects (updateAirtableInfo) is passed into PUT request is generated based on dragged items start and end location
   calls fetch PUT request to update position field at corresponding id in API and sets setIsLoading to true to trigger useCallback.
@@ -177,7 +177,7 @@ function App() {
     fetch(`https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${fetchListType}`, {
       method: 'PUT',
       headers: {
-        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_PERSONAL_TOKEN}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

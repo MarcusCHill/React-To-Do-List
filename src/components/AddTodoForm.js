@@ -34,7 +34,11 @@ function AddTodoForm ({ onAddTodo, todoList }){
   */
   function handleAddTodo (e){
     e.preventDefault();
-    const position = todoList.length;
+    let position = 0;
+    if (todoList.length !== 0){
+      let lastItem = todoList.length - 1;
+      position = todoList[lastItem].fields.Position + 1;
+    }
     onAddTodo(todoTitle, position);
     setTodoTitle("");
   };
